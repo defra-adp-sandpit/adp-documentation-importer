@@ -1,0 +1,16 @@
+azure-search-documents
+azure-identity
+langchain_community
+langchain_openai
+langchain_text_splitters
+icecream
+python-dotenv
+pytest
+python-frontmatter
+unstructured
+markdown
+azure-search-documents
+pytest-cov
+flake8
+mypy
+tox
