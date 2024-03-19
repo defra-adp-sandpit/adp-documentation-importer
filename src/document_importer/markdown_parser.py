@@ -88,7 +88,7 @@ class MarkdownParser:
             dict: The loaded markdown document.
         """
         markdown_document = frontmatter.load(path)
-        if markdown_document.keys() == []:
+        if len(markdown_document.keys()) == 0:
             raise ValueError(f"No frontmatter found in the markdown document at {path}...")
         
         if not markdown_document.get("title") or markdown_document.get("title").strip() == "":

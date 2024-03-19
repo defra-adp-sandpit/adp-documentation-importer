@@ -1,7 +1,6 @@
 from ast import Dict
 import pytest
 import sys
-#sys.path.append('../src/document_importer/')
 from src.document_importer.document_manager import DocumentManager
 
 

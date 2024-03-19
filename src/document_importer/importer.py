@@ -3,9 +3,9 @@
 import os
 from icecream import ic
 import logging
-from document_importer.vector_search import VectorSearch
-from document_importer.markdown_parser import MarkdownParser
-from document_importer.document_manager import DocumentManager
+from vector_search import VectorSearch
+from markdown_parser import MarkdownParser
+from document_manager import DocumentManager
 
 class Importer:
     def __init__(self, config: dict, repository: str, directory: str) -> None:

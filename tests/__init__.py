@@ -1,3 +1,3 @@
 # project tests
 import sys
-sys.path.append('../src/document_importer/')
+sys.path.append('src/document_importer/')
