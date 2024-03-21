@@ -98,3 +98,6 @@ class DocumentManager:
             logging.warning(f"Failed to delete {failed_to_delete}/{len(data_list)} for {repository}:{source}")
         logging.info(f"Succeeded to delete {succeeded_to_delete}/{len(data_list)} in {repository}:{source}")
         return failed_to_delete == 0
+
+    def delete_vector_index(self, index: str):
+        self.index_client.delete_index(index)        
