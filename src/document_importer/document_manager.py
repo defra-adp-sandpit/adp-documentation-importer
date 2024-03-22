@@ -72,7 +72,7 @@ class DocumentManager:
         log:str = f"Statistics for index {self.index_name} retrieved: {result}"
         if oldStats!=None:
             log += f" old stats: {oldStats}"
-        logging.info(log)
+        print(log)
         return result
     def __report_clean(self, repository, source, data_list, results):
         """

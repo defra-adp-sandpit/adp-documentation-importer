@@ -5,6 +5,22 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python Debugger: Current File with Arguments",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": "${command:pickArgs}"
+        },
+        {
+            "name": "Python Debugger: Run Main with Arguments",
+            "type": "debugpy",
+            "request": "launch",
+            "program": ".\\src\\document_importer\\__main__.py",
+            "console": "integratedTerminal",
+            "args": "-r adp/example -d example_docs/example_1"
+        },
+        {
             "name": "Python Debugger: Current File",
             "type": "debugpy",
             "request": "launch",

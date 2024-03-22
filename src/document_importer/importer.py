@@ -61,10 +61,10 @@ class Importer:
     def __report_result(self, pre_import_index_stats):
         
         if len(self.failed_files) > 0:
-            logging.warning(f"Failed to load {len(self.failed_files)}/{len(self.file_paths)}")
-            logging.debug(f"Failed files: {self.failed_files}")
+            print(f"Failed to load {len(self.failed_files)}/{len(self.file_paths)}")
+            logging.debug(f"Failed files load a total of {self.failed_files} markdown files.")
         if len(self.succeed_files) > 0:
-            logging.info(f"Succeed to load {len(self.succeed_files)}/{len(self.file_paths)} with {self.total_chunks} chunks and successful cleaning {self.succeed_cleaning}.")
+            print(f"Succeed to load {len(self.succeed_files)}/{len(self.file_paths)} markdown files with a total of {self.total_chunks} chunks and successful cleaned up {self.succeed_cleaning} older markdown files (if present).")
             logging.debug(f"Succeed files: {self.succeed_files}")
         self.document_manager.get_document_store_statistics(pre_import_index_stats)
 
