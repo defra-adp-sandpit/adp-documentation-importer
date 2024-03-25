@@ -4,11 +4,11 @@ from azure.search.documents import SearchClient, SearchItemPaged
 from azure.search.documents.indexes import SearchIndexClient
 import logging
 
+
 class DocumentManager:
     """
     A class that manages documents and provides methods for retrieving and cleaning them.
     """
-
     def __init__(self, config):
         """
         Initializes a new instance of the DocumentManager class.
@@ -23,7 +23,7 @@ class DocumentManager:
         self.search_client = SearchClient(self.service_endpoint, self.index_name, credential)
         self.index_client = SearchIndexClient(self.service_endpoint, credential)
 
-    def get_full_document(self, repository:str, source:str) -> SearchItemPaged[Dict]:    
+    def get_full_document(self, repository: str, source: str) -> SearchItemPaged[Dict]:
         """
         Retrieves the full document based on the repository and source.
 
@@ -36,8 +36,8 @@ class DocumentManager:
         """
         filter = f"repository eq '{repository}' and source eq '{source}'"
         return self.search_client.search(search_text="*", filter=filter, top=1000)
-    
-    def clean_document(self, repository:str, source:str) -> int:
+
+    def clean_document(self, repository: str, source: str) -> int:
         """
         Cleans the documents for the specified repository and source.
 
@@ -50,9 +50,9 @@ class DocumentManager:
         """
         logging.info(f"Cleaning documents for {repository}:{source}...")
         # Getting documents from index
-        chunks = self.get_full_document(repository, source)   
-        data_list:List[Dict]=[]
-        [data_list.append(chunk) for chunk in chunks]        
+        chunks = self.get_full_document(repository, source)
+        data_list: List[Dict] = []
+        [data_list.append(chunk) for chunk in chunks]
         if len(data_list) == 0:
             logging.info(f"No documents found for {repository}: {source}")
             return True
@@ -60,7 +60,7 @@ class DocumentManager:
         results = self.search_client.delete_documents(data_list)
         return self.__report_clean(repository, source, data_list, results)
 
-    def get_document_store_statistics(self, oldStats:Dict = None) -> Dict:
+    def get_document_store_statistics(self, oldStats: Dict = None) -> Dict:
         """
         Retrieves the statistics for the document store.
 
@@ -68,12 +68,13 @@ class DocumentManager:
             A dictionary containing the statistics for the document store.
         """
         logging.info(f"Getting statistics for index {self.index_name}...")
-        result:Dict = self.index_client.get_index_statistics(self.index_name)
-        log:str = f"Statistics for index {self.index_name} retrieved: {result}"
-        if oldStats!=None:
+        result: Dict = self.index_client.get_index_statistics(self.index_name)
+        log: str = f"Statistics for index {self.index_name} retrieved: {result}"
+        if oldStats is not None:
             log += f" old stats: {oldStats}"
         print(log)
         return result
+
     def __report_clean(self, repository, source, data_list, results):
         """
         Reports the cleaning results for the specified repository and source.
@@ -87,17 +88,17 @@ class DocumentManager:
         Returns:
             True if all documents were deleted successfully, False otherwise.
         """
-        failed_to_delete:int = 0
-        succeeded_to_delete:int = 0
+        failed_to_delete: int = 0
+        succeeded_to_delete: int = 0
         for result in results:
-            if result.succeeded == False:
+            if result.succeeded is False:
                 failed_to_delete += 1
             else:
-                succeeded_to_delete += 1   
+                succeeded_to_delete += 1
         if failed_to_delete > 0:
             logging.warning(f"Failed to delete {failed_to_delete}/{len(data_list)} for {repository}:{source}")
         logging.info(f"Succeeded to delete {succeeded_to_delete}/{len(data_list)} in {repository}:{source}")
         return failed_to_delete == 0
 
     def delete_vector_index(self, index: str):
-        self.index_client.delete_index(index)        
+        self.index_client.delete_index(index)

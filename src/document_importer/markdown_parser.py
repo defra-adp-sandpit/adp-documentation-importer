@@ -1,10 +1,8 @@
 import frontmatter
-from langchain_community.document_loaders import TextLoader
-from langchain_community.document_loaders import UnstructuredMarkdownLoader
-from langchain_text_splitters import CharacterTextSplitter, RecursiveCharacterTextSplitter, MarkdownHeaderTextSplitter
-from icecream import ic
+from langchain_text_splitters import RecursiveCharacterTextSplitter, MarkdownHeaderTextSplitter
 from datetime import datetime
 from frontmatter import Post
+
 
 class MarkdownParser:
     """
@@ -23,7 +21,8 @@ class MarkdownParser:
     def __init__(self):
         pass
 
-    def parse(self, path: str, encoding: str = "utf-8", chunk_size: int = 1000, chunk_overlap: int = 0, repository:str="") -> dict:
+    def parse(self, path: str, encoding: str = "utf-8",
+              chunk_size: int = 1000, chunk_overlap: int = 0, repository: str = "") -> dict:
         """
         Parses a markdown document and splits it into chunks.
 
@@ -37,7 +36,6 @@ class MarkdownParser:
         Returns:
             dict: A dictionary containing the metadata and contents of the parsed chunks.
         """
-        
         # Load the documents
         markdown_document = self.__load_markdown_document(path)
 
@@ -76,7 +74,7 @@ class MarkdownParser:
         # Split
         splits = text_splitter.split_documents(md_header_splits)
         return splits
-    
+
     def __load_markdown_document(self, path: str) -> Post:
         """
         Loads a markdown document and validates its frontmatter.
@@ -90,7 +88,6 @@ class MarkdownParser:
         markdown_document = frontmatter.load(path)
         if len(markdown_document.keys()) == 0:
             raise ValueError(f"No frontmatter found in the markdown document at {path}...")
-        
         if not markdown_document.get("title") or markdown_document.get("title").strip() == "":
             raise ValueError(f"No title found in the frontmatter of the markdown document at {path}...")
         if not markdown_document.get("summary") or markdown_document.get("summary").strip() == "":
@@ -99,10 +96,9 @@ class MarkdownParser:
             raise ValueError(f"No uri found in the frontmatter of the markdown document at {path}...")
         if markdown_document.get("authors") is None or markdown_document.get("authors") == []:
             raise ValueError(f"No authors found in the frontmatter of the markdown document at {path}...")
-        
         return markdown_document
 
-    def __format_chunks(self, chunks, metadata, repository:str, path:str) -> dict:
+    def __format_chunks(self, chunks, metadata, repository: str, path: str) -> dict:
         """
         Formats the chunks and returns a dictionary containing the metadata and contents.
 
@@ -118,7 +114,7 @@ class MarkdownParser:
         page_metadatas = []
         page_contents = []
         today = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S-00:00")
-        chunk_number:int = 0
+        chunk_number: int = 0
         for chunk in chunks:
             chunk_number += 1
             page_metadatas.append({
@@ -140,6 +136,3 @@ class MarkdownParser:
             "page_metadatas": page_metadatas,
             "page_contents": page_contents,
         }
-    
-    
-

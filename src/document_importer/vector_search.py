@@ -1,18 +1,13 @@
 
 from langchain_community.vectorstores.azuresearch import AzureSearch
-from langchain_openai import AzureOpenAIEmbeddings, OpenAIEmbeddings
+from langchain_openai import AzureOpenAIEmbeddings
 from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import CharacterTextSplitter
-from icecream import ic
 from azure.search.documents.indexes.models import (
-    FreshnessScoringFunction,
-    FreshnessScoringParameters,
-    ScoringProfile,
     SearchableField,
     SearchField,
     SearchFieldDataType,
     SimpleField,
-    TextWeights,
 )
 import logging
 
@@ -47,7 +42,7 @@ class VectorSearch:
             azure_endpoint=azure_endpoint,
             api_key=azure_openai_api_key,
         )
-        logging.info(f"Embeddings initialized : {azure_deployment} (endpoint), {azure_deployment} (deployment)")      
+        logging.info(f"Embeddings initialized : {azure_deployment} (endpoint), {azure_deployment} (deployment)")
 
         # Initialize the Azure Search Vector Store
         self.vector_store: AzureSearch = AzureSearch(
@@ -73,12 +68,10 @@ class VectorSearch:
             list: A list of search results.
         """
         return self.vector_store.similarity_search(query=query, k=k, search_type=search_type, filters=filters)
-    
-    
+
     def load_documents(self, path: str, encoding: str = "utf-8", chunk_size: int = 1000, chunk_overlap: int = 0):
         """
         Loads documents from a file and adds them to the vector store.
-
         Args:
             path (str): The path to the file containing the documents.
             encoding (str): The encoding of the file (default: "utf-8").
@@ -104,7 +97,6 @@ class VectorSearch:
         """
         self.vector_store.add_texts(page_contents, page_metadatas)
 
-    
     def __index_fields(self):
         """
         Indexes the fields of the documents.
